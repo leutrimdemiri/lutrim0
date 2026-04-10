@@ -93,19 +93,14 @@ export default defineConfig({
           },
       },
   },
-
+  output: 'server', // or 'hybrid'
+  adapter: cloudflare(),
   vite: {
       optimizeDeps: {
           exclude: ["@resvg/resvg-js"],
       },
       plugins: [tailwind(), rawFonts([".ttf", ".woff"])],
   },
-
-  server: {
-  port: 1234,
-  host: true,
-},
-
   devToolbar: {
       enabled: false,
   },
@@ -117,8 +112,6 @@ export default defineConfig({
           WEBMENTION_PINGBACK: envField.string({ context: "client", access: "public", optional: true }),
       },
   },
-
-  adapter: cloudflare()
 });
 
 function rawFonts(ext: string[]) {

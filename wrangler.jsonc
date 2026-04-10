@@ -1,7 +1,7 @@
 {
-	"compatibility_date": "2026-04-10",
-	"compatibility_flags": ["global_fetch_strictly_public"],
-	"name": "luetrim-dev",
+  "name": "luetrim-dev",
+  "compatibility_date": "2024-04-03",
+  "compatibility_flags": ["nodejs_compat"],
 	"main": "@astrojs/cloudflare/entrypoints/server",
 	"assets": {
 		"directory": "./dist",
