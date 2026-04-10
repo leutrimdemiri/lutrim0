@@ -1,0 +1,56 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/layout/Header.astro";
+import ThemeProvider from "@/components/ThemeProvider.astro";
+import Footer from "@/components/layout/Footer.astro";
+import { siteConfig } from "@/site.config";
+import type { SiteMeta } from "@/types";
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+	meta: SiteMeta;
+}
+
+const {
+	meta: { articleDate, description = siteConfig.description, ogImage, title },
+} = Astro.props;
+---
+
+<html class="scroll-smooth" lang={siteConfig.lang}>
+	<head>
+		<!-- BaseHead -->
+		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
+		<!-- Activate ClientRouter -->
+		<ClientRouter />
+	</head>
+	<body
+		class="bg-background-a0 text-global-text text-md flex min-h-screen flex-col font-sans font-normal antialiased"
+	>
+		<ThemeProvider />
+		<Header />
+		<main id="main" class="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
+			<slot />
+		</main>
+		<Footer />
+		<script is:inline type="speculationrules">
+			{
+				"prefetch": [
+					{
+						"where": {
+							"href_matches": "/*"
+						},
+						"eagerness": "immediate"
+					}
+				],
+				"prerender": [
+					{
+						"where": {
+							"href_matches": "/*"
+						},
+						"eagerness": "moderate"
+					}
+				]
+			}
+		</script>
+	</body>
+</html>

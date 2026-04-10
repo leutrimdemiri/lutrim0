@@ -1,0 +1,30 @@
+---
+export interface SeparatorProps {
+	type?: "horizontal" | "vertical" | "dot";
+	class?: string;
+}
+
+const { type = "horizontal", class: className = "" } = Astro.props as SeparatorProps;
+
+// Base styles for all separators
+const base = "flex-shrink bg-neutral-500 dark:bg-neutral-400";
+
+// Variant-specific Tailwind classes
+const variants = {
+	horizontal: "h-px w-full my-2",
+	vertical: "w-px h-full mx-2",
+	dot: "w-1.5 h-1.5 rounded-full mx-2", // corrected from size-1.5 → w-1.5 h-1.5
+};
+---
+
+{
+	type === "dot" ? (
+		<span class={`${base} ${variants.dot} ${className}`} />
+	) : (
+		<span
+			role="separator"
+			aria-orientation={type === "horizontal" ? "horizontal" : "vertical"}
+			class={`${base} ${variants[type]} ${className}`}
+		/>
+	)
+}

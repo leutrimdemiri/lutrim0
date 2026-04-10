@@ -1,0 +1,133 @@
+/* src/styles/typography.css */
+
+/* Base prose overrides */
+.prose a {
+	text-underline-offset: 2px;
+}
+
+@media (hover: hover) {
+	.prose a:hover {
+		text-decoration-color: var(--color-link);
+		text-decoration-thickness: 2px;
+	}
+}
+
+/* Blockquote */
+.prose blockquote {
+	border-left-width: 0;
+}
+
+/* Code blocks */
+.prose code {
+	padding: 2.5px 3.5px;
+	border-radius: 5px;
+	background-color: var(--code-bg);
+	border: 0.5px solid var(--border);
+	font-size: 0.9em !important;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+	content: "" !important;
+}
+
+/* Keyboard tags (<kbd>) */
+.prose kbd {
+	color: var(--color-global-text);
+	background-color: var(--code-bg);
+	border: 1px solid var(--border);
+	padding: 1px 4px;
+	border-radius: 5px;
+	min-width: 1.75em;
+	display: inline-block;
+	text-align: center;
+	box-shadow: none !important;
+}
+
+/* Horizontal rule */
+.prose hr {
+	margin: 3.75em 0;
+	height: auto;
+	border: none;
+	background: none;
+	text-align: center;
+	position: relative;
+}
+
+.prose hr::before {
+	content: "***";
+	color: color-mix(in oklab, var(--color-global-text) 35%, transparent);
+	font-size: 0.975em;
+	letter-spacing: 0.25em;
+}
+
+/* Strong */
+.prose strong {
+	font-weight: 700;
+}
+
+/* Superscript and footnotes */
+.prose sup {
+	margin-inline-start: calc(var(--spacing) * 0.5);
+}
+
+.prose sup a::before {
+	content: "[";
+}
+
+.prose sup a::after {
+	content: "]";
+}
+
+@media (hover: hover) {
+	.prose sup a:hover {
+		color: var(--color-link);
+	}
+}
+
+/* TABLES */
+.prose tbody tr {
+	border-bottom-width: 0;
+}
+
+.prose tfoot {
+	border-top: 1px dashed #666;
+}
+
+.prose thead {
+	border-bottom-width: 0;
+}
+
+.prose thead th {
+	border-bottom: 1px dashed #666;
+	font-weight: 700;
+}
+
+.prose th[align="center"],
+.prose td[align="center"] {
+	text-align: center;
+}
+
+.prose th[align="right"],
+.prose td[align="right"] {
+	text-align: right;
+}
+
+.prose th[align="left"],
+.prose td[align="left"] {
+	text-align: left;
+}
+
+/* Components */
+.prose .expressive-code,
+.prose .admonition,
+.prose .github-card {
+	margin-top: calc(var(--spacing) * 4);
+	margin-bottom: calc(var(--spacing) * 4);
+}
+
+/* Small typography variant */
+.prose-sm code {
+	font-size: 0.775rem;
+	font-weight: 500;
+}

@@ -1,0 +1,91 @@
+---
+import { type CollectionEntry, render } from "astro:content";
+
+import Masthead from "@/components/blog/Masthead.astro";
+import TOC from "@/components/blog/TOC.astro";
+
+import BaseLayout from "./Base.astro";
+
+interface Props {
+	post: CollectionEntry<"post">;
+}
+
+const { post } = Astro.props;
+const { ogImage, title, description, updatedDate, publishDate } = post.data;
+
+const socialImage = ogImage ?? `/og-image/${post.id}.png`;
+const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
+const { headings } = await render(post);
+---
+
+<BaseLayout
+	meta={{
+		articleDate,
+		description,
+		ogImage: socialImage,
+		title,
+	}}
+>
+	<div class="mb-10 w-full">
+		<Masthead content={post} />
+	</div>
+	<article class="w-full break-words" data-pagefind-body>
+		<div class="flex w-full flex-col gap-6 2xl:grid 2xl:grid-cols-[minmax(0,1fr)_14rem] 2xl:items-start 2xl:gap-6">
+			{!!headings.length && <TOC headings={headings} />}
+			<div
+				class="prose prose-md min-w-0 max-w-none prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-neutral-500 prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none 2xl:col-start-1 2xl:row-start-1"
+			>
+				<slot />
+			</div>
+		</div>
+	</article>
+	<button
+		class="hover:border-link fixed end-4 bottom-8 z-90 flex h-10 w-10 translate-y-28 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all transition-discrete duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12 dark:bg-zinc-700"
+		data-show="false"
+		id="to-top-btn"
+	>
+		<span class="sr-only">Back to top</span>
+		<svg
+			aria-hidden="true"
+			class="h-6 w-6"
+			fill="none"
+			focusable="false"
+			stroke="currentColor"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path d="M4.5 15.75l7.5-7.5 7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+		</svg>
+	</button>
+</BaseLayout>
+
+<script>
+	function initBackToTop() {
+		const scrollBtn = document.getElementById("to-top-btn");
+		const targetHeader = document.getElementById("blog-hero");
+
+		if (!scrollBtn || !targetHeader) return;
+
+		const observer = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				scrollBtn.dataset.show = (!entry.isIntersecting).toString();
+			}
+		});
+
+		observer.observe(targetHeader);
+
+		scrollBtn.onclick = () => {
+			document.documentElement.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
+		};
+	}
+
+	// Initial load
+	initBackToTop();
+
+	// Re-run after client-side navigation
+	document.addEventListener("astro:after-swap", initBackToTop);
+</script>

@@ -1,0 +1,168 @@
+/* would like to ignore ./src/pages/og-image/[slug].png.ts */
+@import "tailwindcss";
+/* config for tailwindcss-typography plugin */
+@config "../../tailwind.config.ts";
+
+/* use a selector-based strategy for dark mode */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* you could refactor below to use light-dark(), depending on your target audience */
+@theme {
+	--color-background-a0: #f1faf8;
+
+	--color-text-a0: #ffffff;
+	/** Theme primary colors */
+	--color-primary-a0: #63cfbc;
+	--color-primary-a10: #59b6a5;
+	--color-primary-a20: #4e9d8f;
+	--color-primary-a30: #448579;
+	--color-primary-a40: #3a6e64;
+	--color-primary-a50: #305750;
+
+	/** Theme surface colors */
+	--color-surface-a0: #ffffff;
+	--color-surface-a10: #f0f0f0;
+	--color-surface-a20: #e1e1e1;
+	--color-surface-a30: #d3d3d3;
+	--color-surface-a40: #c5c5c5;
+	--color-surface-a50: #b6b6b6;
+
+	/** Theme tonal surface colors */
+	--color-surface-tonal-a0: #f1faf8;
+	--color-surface-tonal-a10: #e4ecea;
+	--color-surface-tonal-a20: #d7dedc;
+	--color-surface-tonal-a30: #cad0ce;
+	--color-surface-tonal-a40: #bdc2c1;
+	--color-surface-tonal-a50: #b1b4b4;
+
+	--color-global-bg: oklch(96.35% 0.0067 97.35);
+	--color-global-text: oklch(32.11% 0 89.88);
+	--color-link: oklch(82.22% 0.014 262.37);
+	--color-accent: oklch(58.67% 0.1145 359.52);
+	--color-accent-2: oklch(18.22% 0 89.88);
+	--color-quote: oklch(84.53% 0.0256 174.61);
+	--border: #0000001a;
+	--code-bg: #0000000a;
+	--color-lue-mint: #bcd2cb;
+	--color-lue-beige: #f0eee6;
+	--color-lue-berry: #b25d7a;
+}
+
+@layer base {
+	html {
+		color-scheme: light dark;
+		accent-color: var(--color-accent);
+		scrollbar-gutter: stable;
+		&[data-theme="light"] {
+			color-scheme: light;
+		}
+
+		&[data-theme="dark"] {
+			color-scheme: dark;
+
+			--color-background-a0: #1a2421;
+
+			--color-text-a0: #000000;
+
+			/** Theme primary colors */
+			--color-primary-a0: #1ceac5;
+			--color-primary-a10: #52edcb;
+			--color-primary-a20: #72f0d2;
+			--color-primary-a30: #8bf2d8;
+			--color-primary-a40: #a1f5de;
+			--color-primary-a50: #b6f7e5;
+			--color-primary-a60: #c9f9eb;
+			--color-primary-a70: #dcfbf2;
+			--color-primary-a80: #edfdf8;
+			--color-primary-a90: #ffffff;
+
+			/** Theme surface colors */
+			--color-surface-a0: #121212;
+			--color-surface-a10: #282828;
+			--color-surface-a20: #3f3f3f;
+			--color-surface-a30: #575757;
+			--color-surface-a40: #717171;
+			--color-surface-a50: #8b8b8b;
+			--color-surface-a60: #a7a7a7;
+			--color-surface-a70: #c4c4c4;
+
+			/** Theme tonal surface colors */
+			--color-surface-tonal-a0: #1a2421;
+			--color-surface-tonal-a10: #2f3936;
+			--color-surface-tonal-a20: #464e4c;
+			--color-surface-tonal-a30: #5d6563;
+			--color-surface-tonal-a40: #767d7b;
+			--color-surface-tonal-a50: #909694;
+			--color-surface-tonal-a60: #abafae;
+			--color-surface-tonal-a70: #c6c9c8;
+
+			--color-global-bg: oklch(0.1908 0.0173 2.12);
+			--color-global-text: oklch(84.52% 0 89.88);
+			--color-link: oklch(33.17% 0.017 262.26);
+			--color-accent: oklch(0.5867 0.1145 359.52);
+			--color-accent-2: oklch(94.61% 0 89.88);
+			--color-quote: oklch(0.8453 0.0256 174.61);
+			--border: rgba(255, 255, 255, 0.05);
+			--code-bg: rgba(255, 255, 255, 0.04);
+
+			--color-lue-crail: #c15f3c;
+			--color-lue-cloudy: #b1ada1;
+			--color-lue-pampas: #f4f3ee;
+			--color-lue-green: #798c5f;
+			--color-lue-blue: #6b9ccd;
+			--color-lue-mint: #bcd2cb;
+			--color-lue-beige: #f0eee6;
+			--color-lue-lila: #b8b7c6;
+			--color-lue-berry: #b25d7a;
+		}
+	}
+
+	:target {
+		scroll-margin-block-start: calc(5.5rem + env(safe-area-inset-top));
+	}
+
+	:where(h1, h2, h3, h4, h5, h6)[id] {
+		scroll-margin-block-start: calc(5.5rem + env(safe-area-inset-top));
+	}
+
+	@view-transition {
+		navigation: auto;
+	}
+
+	/* Astro image responsive styles, modified from -> https://docs.astro.build/en/guides/images/#responsive-image-styles */
+	:where([data-astro-image]) {
+		object-fit: var(--fit);
+		object-position: var(--pos);
+	}
+	[data-astro-image="full-width"] {
+		width: 100%;
+	}
+	[data-astro-image="constrained"] {
+		max-width: 100%;
+	}
+}
+
+@layer components {
+	@import "./components/admonition.css";
+	@import "./components/github-card.css";
+
+	.cactus-link {
+		@apply hover:decoration-link underline underline-offset-2 hover:decoration-2;
+	}
+
+	.title {
+		@apply text-accent-2 text-2xl font-semibold;
+	}
+}
+
+@utility prose {
+	--tw-prose-body: var(--color-global-text);
+	--tw-prose-bold: var(--color-global-text);
+	--tw-prose-bullets: var(--color-global-text);
+	--tw-prose-code: var(--color-global-text);
+	--tw-prose-headings: var(--color-accent-2);
+	--tw-prose-hr: 0.5px dashed #666;
+	--tw-prose-links: var(--color-global-text);
+	--tw-prose-quotes: var(--color-quote);
+	--tw-prose-th-borders: #666;
+}

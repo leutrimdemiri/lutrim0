@@ -1,0 +1,164 @@
+---
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import CommandPalette from "@/components/search/CommandPalette.svelte";
+import Search from "@/components/search/Search.svelte";
+import { menuLinks } from "@/site.config";
+import { siteConfig } from "../../site.config";
+---
+
+<header class="bg-background-a0 sticky top-0 z-50 backdrop-blur-md">
+	<div class="mx-auto max-w-4xl px-4 py-5 sm:px-6 md:py-6">
+		<div class="flex items-center justify-between">
+			<a
+				href="/"
+				class="text-foreground dark:text-foreground-dark flex items-center gap-2 text-xl font-medium hover:underline sm:grayscale sm:hover:filter-none"
+			>
+				<svg
+					class="h-8 w-8"
+					viewBox="0 0 600 400"
+					xmlns="http://www.w3.org/2000/svg"
+					xml:space="preserve"
+					style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"
+				>
+					<path
+						d="M561.38 68.121V331.88c0 31.844-25.853 57.697-57.697 57.697H96.317c-31.844 0-57.697-25.853-57.697-57.697V68.121c0-31.844 25.853-57.697 57.697-57.697h407.366c31.844 0 57.697 25.853 57.697 57.697"
+						style="fill:#59b6a5"></path>
+					<path
+						style="fill:#fff;fill-rule:nonzero;stroke:#000;stroke-opacity:0;stroke-width:1px"
+						d="M95.792 63.173h36.347v258.013H95.792zM201.97 313.487q15.219 7.7 34.02 7.699 18.8 0 34.02-7.699a29.7 29.7 0 0 0 4.834-3.044v10.564h36.347V145.358h-36.526v89.167q0 21.308-7.52 34.02-9.669 16.293-31.155 16.294-21.844 0-31.513-16.831-7.341-12.891-7.341-34.736v-87.914h-36.347v87.914q0 28.649 10.922 49.776 10.743 20.59 30.26 30.439Zm176.186-98.836q7.699-32.945 43.868-32.945 36.168 0 43.868 32.945zm126.052 34.378v-17.368q0-8.774-1.432-17.01-5.013-32.23-26.5-50.671-21.486-18.621-54.252-18.621-37.422 0-59.803 23.993-22.381 23.814-22.381 63.921t22.919 63.921q22.74 23.993 61.056 23.993 26.5 0 47.09-11.459 20.59-11.28 30.439-31.513l-32.587-15.936q-5.193 10.564-17.01 16.652-11.997 5.909-27.932 5.909-39.212 0-46.195-35.81h126.589Z"
+					></path>
+				</svg>
+				{siteConfig.title}
+			</a>
+			<!-- Desktop Navigation -->
+			<div class="hidden items-center gap-6 md:flex">
+				<nav class="flex items-center gap-4">
+					{
+						menuLinks.map((link) => (
+							<a
+								aria-current={Astro.url.pathname === link.path ? "page" : false}
+								class="hover:text-accent text-sm hover:underline"
+								href={link.path}
+							>
+								{link.title}
+							</a>
+						))
+					}
+				</nav>
+
+				<Search client:visible />
+				<ThemeToggle />
+			</div>
+			<!-- Mobile Navigation Controls -->
+			<div class="flex items-center gap-2 md:hidden">
+				<ThemeToggle />
+				<Search client:visible />
+				<button
+					id="mobile-menu-button"
+					type="button"
+					class="hover:bg-accent inline-flex cursor-pointer items-center justify-center rounded-md p-2 hover:text-gray-50"
+					aria-expanded="false"
+					aria-label="Toggle menu"
+				>
+					<svg
+						id="menu-icon"
+						class="block h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+					</svg>
+					<svg
+						id="close-icon"
+						class="hidden h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+		<!-- Mobile Navigation -->
+		<nav
+			id="mobile-menu"
+			class="mobile-menu space-y-2 border-t border-gray-200 dark:border-gray-800"
+		>
+			{
+				menuLinks.map((link) => (
+					<a
+						aria-current={Astro.url.pathname === link.path ? "page" : false}
+						class="text-foreground dark:text-foreground-dark block px-3 py-2 text-lg hover:underline"
+						href={link.path}
+					>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</header>
+<CommandPalette client:load />
+
+<style>
+	/* Mobile menu animation */
+	.mobile-menu {
+		max-height: 0;
+		overflow: hidden;
+		opacity: 0;
+		transition:
+			max-height 0.3s ease-out,
+			opacity 0.3s ease-out,
+			margin 0.3s ease-out,
+			padding 0.3s ease-out;
+		margin-top: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+	@media (max-width: 767px) {
+		.mobile-menu.menu-open {
+			max-height: 300px;
+			opacity: 1;
+			margin-top: 1rem;
+			padding-top: 1rem;
+		}
+	}
+</style>
+<script>
+	function c() {
+		const t = document.getElementById("mobile-menu-button"),
+			e = document.getElementById("mobile-menu"),
+			n = document.getElementById("menu-icon"),
+			o = document.getElementById("close-icon");
+		if (!t || !e || !n || !o) return;
+		function d() {
+			e?.classList.remove("menu-open");
+			n?.classList.remove("hidden");
+			o?.classList.add("hidden");
+			t?.setAttribute("aria-expanded", "false");
+		}
+		(t.addEventListener("click", () => {
+			t.getAttribute("aria-expanded") === "true"
+				? d()
+				: (e?.classList.add("menu-open"),
+					n.classList.add("hidden"),
+					o.classList.remove("hidden"),
+					t.setAttribute("aria-expanded", "true"));
+		}),
+			e?.querySelectorAll("a").forEach((s) => {
+				s.addEventListener("click", d);
+			}));
+	}
+	c();
+	document.addEventListener("astro:after-swap", () => {
+		c();
+	});
+</script>

@@ -1,0 +1,60 @@
+<!-- Inlined to avoid FOUC. Runs as early as possible and handles bfcache/pageshow. -->
+<script is:inline>
+	(function () {
+		const mql = window.matchMedia("(prefers-color-scheme: light)");
+
+		function safeLocalStorageGet(key) {
+			try {
+				return localStorage.getItem(key);
+			} catch (e) {
+				return null;
+			}
+		}
+
+		function safeLocalStorageSet(key, value) {
+			try {
+				localStorage.setItem(key, value);
+			} catch (e) {
+				// ignore
+			}
+		}
+
+		function getUserPref() {
+			const stored = safeLocalStorageGet("theme");
+			if (stored === "light" || stored === "dark") return stored;
+			return mql.matches ? "light" : "dark";
+		}
+
+		function setTheme(newTheme) {
+			if (newTheme !== "light" && newTheme !== "dark") return;
+			const root = document.documentElement;
+			if (root.getAttribute("data-theme") === newTheme) return;
+			root.setAttribute("data-theme", newTheme);
+			safeLocalStorageSet("theme", newTheme);
+		}
+
+		// initial setup
+		setTheme(getUserPref());
+
+		// Reapply theme after client-side page swaps
+		document.addEventListener("astro:after-swap", () => setTheme(getUserPref()));
+
+		// Listen for theme-change custom event
+		document.addEventListener("theme-change", (e) => {
+			const t = e?.detail?.theme;
+			if (t) setTheme(t);
+		});
+
+		// Media query changes (older Safari fallback)
+		function onMediaChange(e) {
+			setTheme(e.matches ? "light" : "dark");
+		}
+		if (mql.addEventListener) mql.addEventListener("change", onMediaChange);
+		else if (mql.addListener) mql.addListener(onMediaChange);
+
+		// pageshow handles bfcache restores (iOS Safari gestures)
+		window.addEventListener("pageshow", (ev) => {
+			if (ev.persisted) setTheme(getUserPref());
+		});
+	})();
+</script>
