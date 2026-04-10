@@ -27,7 +27,7 @@ export const siteConfig: SiteConfig = {
 	*/
 	title: "luetrim.dev",
 	// ! Please remember to replace the following site property with your own domain, used in astro.config.ts
-	url: "http://localhost:1234/",
+	url: "http://luetrim.dev/",
 };
 
 // Used to generate links in both the Header & Footer.
