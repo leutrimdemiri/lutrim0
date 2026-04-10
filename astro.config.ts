@@ -20,8 +20,6 @@ import { remarkGithubCard } from "./src/plugins/remark-github-card";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 
-import cloudflare from "@astrojs/cloudflare";
-
 // https://astro.build/config
 export default defineConfig({
   site: siteConfig.url,
@@ -93,8 +91,7 @@ export default defineConfig({
           },
       },
   },
-  output: 'server', // or 'hybrid'
-  adapter: cloudflare(),
+
   vite: {
       optimizeDeps: {
           exclude: ["@resvg/resvg-js"],
@@ -111,7 +108,7 @@ export default defineConfig({
           WEBMENTION_URL: envField.string({ context: "client", access: "public", optional: true }),
           WEBMENTION_PINGBACK: envField.string({ context: "client", access: "public", optional: true }),
       },
-  },
+  }
 });
 
 function rawFonts(ext: string[]) {
